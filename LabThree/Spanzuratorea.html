@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spanzuratoarea</title>
+</head>
+<body>
+    <script>
+        // Vector de cuvinte
+        const cuvinte = ["piersica", "maimuta", "clatita", "cascada"];
+
+        // Alege un cuvânt aleatoriu din vector
+        const cuvant = cuvinte[Math.floor(Math.random() * cuvinte.length)];
+
+        // Inițializăm vectorul de răspuns cu '_'
+        let vector_raspuns = [];
+        for (let i = 0; i < cuvant.length; i++) {
+            vector_raspuns[i] = "_";
+        }
+
+        let litere_ramase = cuvant.length;
+        let incercari = 6;  // Număr limitat de încercări
+
+        // Jocul
+        while (litere_ramase > 0 && incercari > 0) {
+            // Afișăm progresul jucătorului
+            alert(vector_raspuns.join(" ") + `\nÎncercări rămase: ${incercari}`);
+
+            // Cerem jucătorului o literă
+            let litera = prompt("Introdu o literă sau apasă Anulează pentru a ieși din joc.");
+
+            // Ieșire dacă jucătorul apasă Anulează
+            if (litera === null) {
+                break;
+            } else if (litera.length !== 1) {
+                alert("Te rog să introduci o singură literă.");
+            } else {
+                litera = litera.toLowerCase();  // Convertim litera la minusculă
+
+                // Actualizăm vectorul răspuns dacă litera se potrivește
+                let litera_corecta = false;
+                for (let j = 0; j < cuvant.length; j++) {
+                    if (cuvant[j] === litera) {
+                        vector_raspuns[j] = litera;
+                        litere_ramase--;
+                        litera_corecta = true;
+                    }
+                }
+
+                if (!litera_corecta) {
+                    incercari--;  // Scădem o încercare dacă litera nu se află în cuvânt
+                    alert("Litera nu se află în cuvânt.");
+                }
+
+                if (incercari === 0) {
+                    alert("Ai rămas fără încercări! Jocul s-a terminat.");
+                    break;
+                }
+            }
+        }
+
+        if (litere_ramase === 0) {
+            alert("Felicitări! Ai ghicit cuvântul: " + cuvant);
+        } else {
+            alert("Cuvântul corect era: " + cuvant);
+        }
+    </script>
+</body>
+</html>
