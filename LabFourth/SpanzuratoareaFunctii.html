@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spanzuratoarea</title>
+</head>
+<body>
+    <script>
+        // Vector de cuvinte
+        const cuvinte = ["piersica", "maimuta", "clatita", "cascada"];
+
+        // Funcția care alege un cuvânt aleatoriu din vector
+        function alegeCuvant() {
+            return cuvinte[Math.floor(Math.random() * cuvinte.length)];
+        }
+
+        // Funcția care inițializează vectorul răspuns cu '_'
+        function initializeazaVectorRaspuns(cuvant) {
+            let vector_raspuns = [];
+            for (let i = 0; i < cuvant.length; i++) {
+                vector_raspuns[i] = "_";
+            }
+            return vector_raspuns;
+        }
+
+        // Funcția care cere jucătorului o literă
+        function cereLitera() {
+            let litera = prompt("Introdu o literă sau apasă Anulează pentru a ieși din joc.");
+            if (litera === null) {
+                return null;
+            } else if (litera.length !== 1) {
+                alert("Te rog să introduci o singură literă.");
+                return cereLitera();  // Recursie dacă introduce mai mult de o literă
+            } else {
+                return litera.toLowerCase();  // Convertim litera la minusculă
+            }
+        }
+
+        // Funcția care actualizează vectorul răspuns dacă litera se potrivește
+        function actualizeazaVectorRaspuns(cuvant, vector_raspuns, litera) {
+            let litera_corecta = false;
+            for (let j = 0; j < cuvant.length; j++) {
+                if (cuvant[j] === litera) {
+                    vector_raspuns[j] = litera;
+                    litera_corecta = true;
+                }
+            }
+            return litera_corecta;
+        }
+
+        // Funcția care afișează progresul jucătorului
+        function afiseazaProgres(vector_raspuns, incercari) {
+            alert(vector_raspuns.join(" ") + `\nÎncercări rămase: ${incercari}`);
+        }
+
+        // Funcția principală care rulează jocul
+        function joacaJocul() {
+            const cuvant = alegeCuvant();
+            let vector_raspuns = initializeazaVectorRaspuns(cuvant);
+            let litere_ramase = cuvant.length;
+            let incercari = 6;  // Număr limitat de încercări
+
+            while (litere_ramase > 0 && incercari > 0) {
+                afiseazaProgres(vector_raspuns, incercari);
+
+                let litera = cereLitera();
+
+                // Ieșire dacă jucătorul apasă Anulează
+                if (litera === null) {
+                    break;
+                }
+
+                let litera_corecta = actualizeazaVectorRaspuns(cuvant, vector_raspuns, litera);
+
+                if (!litera_corecta) {
+                    incercari--;  // Scădem o încercare dacă litera nu se află în cuvânt
+                    alert("Litera nu se află în cuvânt.");
+                } else {
+                    litere_ramase = vector_raspuns.filter(litera => litera === "_").length;
+                }
+
+                if (incercari === 0) {
+                    alert("Ai rămas fără încercări! Jocul s-a terminat.");
+                    break;
+                }
+            }
+
+            if (litere_ramase === 0) {
+                alert("Felicitări! Ai ghicit cuvântul: " + cuvant);
+            } else {
+                alert("Cuvântul corect era: " + cuvant);
+            }
+        }
+
+        // Pornim jocul
+        joacaJocul();
+    </script>
+</body>
+</html>
